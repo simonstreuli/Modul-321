@@ -1,0 +1,6 @@
+version: '3.8'
+services:
+  service3:
+    build: ./service-java
+    ports:
+      - "5003:8080"
