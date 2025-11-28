@@ -62,12 +62,14 @@ public class ItemsController implements ItemsApi {
     public ResponseEntity<Item> updateItem(Long id, UpdateItemRequest updateItemRequest) {
         logger.info("PUT /api/items/{} - Updating item", id);
         
+        // In a real implementation, we would fetch the existing item and preserve createdAt
+        // For this demo, we use a fixed past timestamp to simulate the original creation time
         Item updatedItem = new Item();
         updatedItem.setId(id);
         updatedItem.setName(updateItemRequest.getName());
         updatedItem.setDescription(updateItemRequest.getDescription());
         updatedItem.setPrice(updateItemRequest.getPrice());
-        updatedItem.setCreatedAt(OffsetDateTime.now());
+        updatedItem.setCreatedAt(OffsetDateTime.now().minusDays(7)); // Simulated original creation time
         
         logger.info("Updated item: {}", updatedItem.getName());
         return ResponseEntity.ok(updatedItem);

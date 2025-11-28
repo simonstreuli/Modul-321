@@ -61,16 +61,19 @@ simple-crud-api/
 ### Build with Maven
 
 ```bash
+# Navigate to simple-crud-api directory
+cd simple-crud-api
+
 # Generate stubs and build server
-cd server
-mvn clean compile
+mvn -f server/pom.xml clean package -DskipTests
 
 # Generate stubs and build client
-cd ../client
-mvn clean compile
+mvn -f client/pom.xml clean package -DskipTests
 ```
 
 ### Run with Docker Compose
+
+**Note:** You must build the JARs with Maven first before running Docker Compose.
 
 ```bash
 cd simple-crud-api
