@@ -1,0 +1,12 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+.idea
+
+./basic
+
+./simple-crud-api/.gitignore
+./basic-setup/.gitignore
+
+./basic-setup/service-java/target
