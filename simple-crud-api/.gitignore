@@ -1,5 +1,5 @@
 # Maven build directories
-target/
+targeWt/
 
 # IDE files
 .idea/
@@ -11,3 +11,6 @@ target/
 # OS files
 .DS_Store
 Thumbs.db
+
+client/target
+server/target
