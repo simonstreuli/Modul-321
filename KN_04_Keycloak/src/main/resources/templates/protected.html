@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protected Page - Keycloak OIDC Demo</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>KN_04: IAM with Keycloak</h1>
+            <h2>Protected Page</h2>
+        </header>
+
+        <nav>
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/public}">Public Page</a>
+            <a th:href="@{/protected}" class="active">Protected Page</a>
+            <div class="auth-links">
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="btn-logout">Logout</button>
+                </form>
+            </div>
+        </nav>
+
+        <main>
+            <div class="protected-box">
+                <h2>🔒 Protected Content</h2>
+                <p class="success">✓ You have successfully authenticated via Keycloak!</p>
+                
+                <div class="user-info">
+                    <h3>User Information (from ID Token)</h3>
+                    <table class="info-table">
+                        <tr>
+                            <td><strong>Username:</strong></td>
+                            <td th:text="${username}">username</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Email:</strong></td>
+                            <td th:text="${email}">email@example.com</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Full Name:</strong></td>
+                            <td th:text="${fullName}">Full Name</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="token-info">
+                    <h3>OpenID Connect Details</h3>
+                    <p>This information was extracted from the <strong>ID Token</strong> received during the OpenID Connect Code Flow.</p>
+                    
+                    <details>
+                        <summary>View ID Token Claims</summary>
+                        <div class="claims-box">
+                            <table class="claims-table">
+                                <thead>
+                                    <tr>
+                                        <th>Claim</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="claim : ${claims}">
+                                        <td th:text="${claim.key}">claim</td>
+                                        <td th:text="${claim.value}">value</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>View Raw ID Token (JWT)</summary>
+                        <div class="token-box">
+                            <code th:text="${idToken}">token</code>
+                        </div>
+                        <p class="info-note">
+                            <small>This is a JWT (JSON Web Token) that contains your identity information, cryptographically signed by Keycloak.</small>
+                        </p>
+                    </details>
+                </div>
+
+                <div class="info-box">
+                    <h3>About This Page</h3>
+                    <p>This page is protected and can only be accessed after successful authentication through Keycloak using the OpenID Connect Code Flow.</p>
+                    
+                    <h4>Security Features Demonstrated:</h4>
+                    <ul>
+                        <li><strong>Authentication:</strong> Verified user identity via Keycloak</li>
+                        <li><strong>Authorization:</strong> Access control based on authentication state</li>
+                        <li><strong>Token-based Security:</strong> JWT tokens for secure information exchange</li>
+                        <li><strong>Code Flow:</strong> OAuth 2.0 Authorization Code Flow with PKCE</li>
+                    </ul>
+
+                    <h4>What Happened:</h4>
+                    <ol>
+                        <li>You clicked "Login" and were redirected to Keycloak</li>
+                        <li>You entered your credentials in Keycloak's login page</li>
+                        <li>Keycloak authenticated you and issued an authorization code</li>
+                        <li>The application exchanged the code for an ID Token and Access Token</li>
+                        <li>The application validated the tokens and extracted your user information</li>
+                        <li>You were granted access to this protected page</li>
+                    </ol>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>KN_04 - Modul 321: Verteilte Systeme programmieren</p>
+        </footer>
+    </div>
+</body>
+</html>

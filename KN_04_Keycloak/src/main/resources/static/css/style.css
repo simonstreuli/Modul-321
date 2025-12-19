@@ -1,0 +1,302 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+/* Header */
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+header h2 {
+    font-size: 1.5em;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+/* Navigation */
+nav {
+    background: #f8f9fa;
+    padding: 15px 30px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    border-bottom: 2px solid #e9ecef;
+}
+
+nav a {
+    color: #495057;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+nav a:hover {
+    background: #e9ecef;
+    color: #667eea;
+}
+
+nav a.active {
+    background: #667eea;
+    color: white;
+}
+
+.auth-links {
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-login, .btn-logout {
+    background: #28a745;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+.btn-login:hover {
+    background: #218838;
+}
+
+.btn-logout {
+    background: #dc3545;
+}
+
+.btn-logout:hover {
+    background: #c82333;
+}
+
+/* Main Content */
+main {
+    padding: 40px;
+}
+
+.welcome-box, .public-box, .protected-box, .info-box, .content-section, .action-box {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.welcome-box h2, .public-box h2, .protected-box h2 {
+    color: #667eea;
+    margin-bottom: 20px;
+}
+
+.success {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 12px 20px;
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+.info {
+    background: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+    padding: 12px 20px;
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+.info-note {
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+ul {
+    margin-left: 30px;
+    margin-top: 10px;
+    line-height: 1.8;
+}
+
+ol {
+    margin-left: 30px;
+    margin-top: 10px;
+    line-height: 1.8;
+}
+
+h3 {
+    color: #495057;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+h4 {
+    color: #6c757d;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* User Info Table */
+.user-info {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.info-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.info-table td:first-child {
+    width: 150px;
+    color: #6c757d;
+}
+
+/* Token Info */
+.token-info {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+details {
+    margin: 15px 0;
+}
+
+summary {
+    cursor: pointer;
+    padding: 12px;
+    background: #e9ecef;
+    border-radius: 5px;
+    font-weight: 500;
+    color: #495057;
+    user-select: none;
+}
+
+summary:hover {
+    background: #dee2e6;
+}
+
+.claims-box, .token-box {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.claims-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.claims-table th {
+    background: #667eea;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.claims-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.claims-table tr:hover {
+    background: #f8f9fa;
+}
+
+.token-box code {
+    display: block;
+    word-break: break-all;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #495057;
+}
+
+/* Footer */
+footer {
+    background: #343a40;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .auth-links {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    header h2 {
+        font-size: 1.2em;
+    }
+
+    main {
+        padding: 20px;
+    }
+}

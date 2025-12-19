@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Page - Keycloak OIDC Demo</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>KN_04: IAM with Keycloak</h1>
+            <h2>Public Page</h2>
+        </header>
+
+        <nav>
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/public}" class="active">Public Page</a>
+            <a th:href="@{/protected}" sec:authorize="isAuthenticated()">Protected Page</a>
+            <div class="auth-links">
+                <a th:href="@{/oauth2/authorization/keycloak}" sec:authorize="!isAuthenticated()" class="btn-login">Login</a>
+                <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" style="display: inline;">
+                    <button type="submit" class="btn-logout">Logout</button>
+                </form>
+            </div>
+        </nav>
+
+        <main>
+            <div class="public-box">
+                <h2>🌍 Public Content</h2>
+                <p class="success" th:text="${message}">This is a public page accessible to everyone!</p>
+                
+                <div class="content-section">
+                    <h3>About Public Access</h3>
+                    <p>This page is accessible to anyone without requiring authentication. It demonstrates the concept of publicly available resources in a distributed system.</p>
+                    
+                    <h3>No Login Required</h3>
+                    <p>You can view this page whether you are:</p>
+                    <ul>
+                        <li>Not logged in (anonymous user)</li>
+                        <li>Logged in via Keycloak</li>
+                    </ul>
+
+                    <h3>Security Note</h3>
+                    <p>While this page is public, the application still maintains security for protected resources. The <a th:href="@{/protected}">protected page</a> requires authentication through Keycloak.</p>
+                </div>
+
+                <div class="action-box">
+                    <h3>Next Steps</h3>
+                    <div sec:authorize="!isAuthenticated()">
+                        <p>To access protected content, please <a th:href="@{/oauth2/authorization/keycloak}">login with Keycloak</a>.</p>
+                    </div>
+                    <div sec:authorize="isAuthenticated()">
+                        <p>You are already logged in! Visit the <a th:href="@{/protected}">protected page</a> to see your user information.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>KN_04 - Modul 321: Verteilte Systeme programmieren</p>
+        </footer>
+    </div>
+</body>
+</html>
