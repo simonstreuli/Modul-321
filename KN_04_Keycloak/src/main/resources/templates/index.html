@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keycloak OIDC Demo - Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>KN_04: IAM with Keycloak</h1>
+            <h2>OpenID Connect Demo</h2>
+        </header>
+
+        <nav>
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/public}">Public Page</a>
+            <a th:href="@{/protected}" sec:authorize="isAuthenticated()">Protected Page</a>
+            <div class="auth-links">
+                <a th:href="@{/oauth2/authorization/keycloak}" sec:authorize="!isAuthenticated()" class="btn-login">Login</a>
+                <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" style="display: inline;">
+                    <button type="submit" class="btn-logout">Logout</button>
+                </form>
+            </div>
+        </nav>
+
+        <main>
+            <div class="welcome-box">
+                <h2>Welcome to the Keycloak OpenID Connect Demo</h2>
+                
+                <div th:if="${authenticated}">
+                    <p class="success">✓ You are logged in as: <strong th:text="${username}">User</strong></p>
+                    <p>You can now access the <a th:href="@{/protected}">protected page</a>.</p>
+                </div>
+                
+                <div th:unless="${authenticated}">
+                    <p class="info">You are not logged in.</p>
+                    <p>You can:</p>
+                    <ul>
+                        <li>View the <a th:href="@{/public}">public page</a> without logging in</li>
+                        <li><a th:href="@{/oauth2/authorization/keycloak}">Login</a> to access the protected page</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h3>About this Demo</h3>
+                <p>This application demonstrates Identity and Access Management (IAM) using Keycloak and OpenID Connect.</p>
+                
+                <h4>Features:</h4>
+                <ul>
+                    <li><strong>Public Page:</strong> Accessible without authentication</li>
+                    <li><strong>Protected Page:</strong> Requires authentication via Keycloak</li>
+                    <li><strong>User Information:</strong> Displays data extracted from the ID Token</li>
+                    <li><strong>OpenID Connect Code Flow:</strong> Secure authorization flow</li>
+                </ul>
+
+                <h4>Security Concepts:</h4>
+                <ul>
+                    <li><strong>Confidentiality:</strong> Secure authentication via OAuth2/OIDC</li>
+                    <li><strong>Integrity:</strong> Cryptographically signed JWT tokens</li>
+                    <li><strong>Availability:</strong> Centralized identity management</li>
+                </ul>
+            </div>
+        </main>
+
+        <footer>
+            <p>KN_04 - Modul 321: Verteilte Systeme programmieren</p>
+        </footer>
+    </div>
+</body>
+</html>
