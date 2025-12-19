@@ -31,6 +31,8 @@ public class HomeController {
         model.addAttribute("username", principal.getPreferredUsername());
         model.addAttribute("email", principal.getEmail());
         model.addAttribute("fullName", principal.getFullName());
+        // Note: Displaying raw token is for educational/demo purposes only
+        // In production, avoid exposing the raw token to the UI
         model.addAttribute("idToken", principal.getIdToken().getTokenValue());
         model.addAttribute("claims", principal.getClaims());
         return "protected";
