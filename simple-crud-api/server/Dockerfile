@@ -1,9 +1,9 @@
 # Runtime stage - assumes JAR is pre-built with 'mvn package'
-# To build: cd simple-crud-api && mvn -f server/pom.xml package -DskipTests
+# To build: docker build -f simple-crud-api/server/Dockerfile -t crud-api-server .
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
-# Copy everything including api-spec for OpenAPI generation
-COPY ../.. .
+# Copy simple-crud-api directory including api-spec for OpenAPI generation
+COPY simple-crud-api .
 WORKDIR /app/server
 RUN mvn clean package -DskipTests
 
