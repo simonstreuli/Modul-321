@@ -38,11 +38,26 @@ jobs:
           cd simple-crud-api/server
           java -jar target/crud-api-server-*.jar &
           echo $! > app.pid
-          sleep 30
+          
+          # Wait for application to be ready (max 60 seconds)
+          echo "Waiting for application to start..."
+          for i in {1..12}; do
+            if curl -s http://localhost:8080/v3/api-docs > /dev/null 2>&1; then
+              echo "Application is ready!"
+              break
+            fi
+            echo "Attempt $i/12: Application not ready yet..."
+            sleep 5
+          done
 
       - name: Download OpenAPI spec
         run: |
-          curl -s http://localhost:8080/v3/api-docs -o openapi.json || echo "Failed to fetch OpenAPI spec"
+          HTTP_CODE=$(curl -s -o openapi.json -w "%{http_code}" http://localhost:8080/v3/api-docs)
+          if [ "$HTTP_CODE" -ne 200 ]; then
+            echo "Failed to fetch OpenAPI spec. HTTP status code: $HTTP_CODE"
+            exit 1
+          fi
+          echo "OpenAPI spec downloaded successfully"
 
       - name: Stop application
         run: |

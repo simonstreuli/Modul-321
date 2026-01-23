@@ -68,9 +68,20 @@ jobs:
           # Check if tag already exists
           if git rev-parse "v${{ inputs.version }}" >/dev/null 2>&1; then
             echo "Tag v${{ inputs.version }} already exists, skipping tag creation"
-          else
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git tag -a "v${{ inputs.version }}" -m "Release v${{ inputs.version }}"
-            git push origin "v${{ inputs.version }}"
+            exit 0
           fi
+          
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Create and push tag
+          git tag -a "v${{ inputs.version }}" -m "Release v${{ inputs.version }}"
+          
+          if ! git push origin "v${{ inputs.version }}"; then
+            echo "Warning: Failed to push tag v${{ inputs.version }}. This may be due to permissions or branch protection."
+            echo "The Docker image was built and pushed successfully."
+            exit 0
+          fi
+          
+          echo "Successfully created and pushed tag v${{ inputs.version }}"
