@@ -16,6 +16,8 @@ jobs:
     uses: ./.github/workflows/build-test.yml
     with:
       java-version: '17'
+    permissions:
+      contents: read
 
   build-and-push-docker:
     name: Build and Push Docker Image
@@ -37,3 +39,5 @@ jobs:
     uses: ./.github/workflows/api-docs.yml
     with:
       java-version: '17'
+    permissions:
+      contents: read
