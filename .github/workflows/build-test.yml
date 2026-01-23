@@ -1,0 +1,68 @@
+name: Build and Test
+
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        description: 'Java version to use'
+        required: false
+        type: string
+        default: '17'
+    outputs:
+      version:
+        description: 'Version from pom.xml'
+        value: ${{ jobs.build-and-test.outputs.version }}
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK ${{ inputs.java-version }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ inputs.java-version }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Get version from pom.xml
+        id: get-version
+        run: |
+          cd simple-crud-api/server
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Project version: ${VERSION}"
+
+      - name: Build with Maven
+        run: |
+          cd simple-crud-api/server
+          mvn clean compile -B
+
+      - name: Run tests with coverage
+        run: |
+          cd simple-crud-api/server
+          mvn test -B
+
+      - name: Package application
+        run: |
+          cd simple-crud-api/server
+          mvn package -DskipTests -B
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: crud-api-server-jar
+          path: simple-crud-api/server/target/*.jar
+          retention-days: 7

@@ -1,0 +1,74 @@
+name: Generate API Documentation
+
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        description: 'Java version to use'
+        required: false
+        type: string
+        default: '17'
+
+jobs:
+  generate-api-docs:
+    name: Generate API Documentation
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ inputs.java-version }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ inputs.java-version }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build application
+        run: |
+          cd simple-crud-api/server
+          mvn package -DskipTests -B
+
+      - name: Start application in background
+        run: |
+          cd simple-crud-api/server
+          java -jar target/crud-api-server-*.jar &
+          echo $! > app.pid
+          
+          # Wait for application to be ready (max 60 seconds)
+          echo "Waiting for application to start..."
+          for i in {1..12}; do
+            if curl -s http://localhost:8080/v3/api-docs > /dev/null 2>&1; then
+              echo "Application is ready!"
+              break
+            fi
+            echo "Attempt $i/12: Application not ready yet..."
+            sleep 5
+          done
+
+      - name: Download OpenAPI spec
+        run: |
+          HTTP_CODE=$(curl -s -o openapi.json -w "%{http_code}" http://localhost:8080/v3/api-docs)
+          if [ "$HTTP_CODE" -ne 200 ]; then
+            echo "Failed to fetch OpenAPI spec. HTTP status code: $HTTP_CODE"
+            exit 1
+          fi
+          echo "OpenAPI spec downloaded successfully"
+
+      - name: Stop application
+        run: |
+          if [ -f app.pid ]; then
+            kill $(cat app.pid) 2>/dev/null || true
+          fi
+
+      - name: Upload OpenAPI spec
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: openapi-spec
+          path: openapi.json
+          retention-days: 30
